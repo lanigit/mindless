@@ -1,25 +1,13 @@
 const express = require("express");
 const cors = require('cors');
 const path = require('path');
+// const welcome = require('../client/src/Welcome.mjs');
 const PORT = process.env.PORT || 3001;
 const API_TOKEN = process.env.API_TOKEN; // set this if using paid version
 const app = express();
 app.use(cors());
 let quote = '';
 let author = '';
-
-
-// EXAMPLE REQUEST
-// fetch('https://zenquotes.io/api/random')
-//     .then((response) => response.text())
-//     .catch(err => console.log(err))
-// .then((body) => {
-//     // console.log(JSON.parse(body)[0]) // original nested JSON object
-//     quote = JSON.parse(body)[0].q;
-//     author = JSON.parse(body)[0].a;
-//     console.log(quote);
-//     console.log(`- ${author}`);
-// });
 
 // Handle GET requests to /newQuote route
 app.get("/newQuote", (req, res) => {
@@ -32,8 +20,9 @@ app.get("/newQuote", (req, res) => {
     )
     .then((response) => response.json())
     .then((data) => {
-        quote = data[0].q
-        res.send({ quote });
+        quote = data[0].q;
+        res.send(`<h1>Welcome to simple mindful quotes!</h1>
+        <h3>Quote:</h3><h4 style="color:green">${quote}</h4>`);
         author = data[0].a
         console.log(`- ${quote}`);
         console.log(`-- ${author}\n`);
