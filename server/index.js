@@ -2,24 +2,29 @@ const express = require("express");
 const cors = require('cors');
 const path = require('path');
 const PORT = process.env.PORT || 3001;
+const API_TOKEN = process.env.API_TOKEN; // set this if using paid version
 const app = express();
 app.use(cors());
-let data = '';
+let quote = '';
+let author = '';
 
 // Have Node serve the files for our built React app
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 
-// EXAMPLE 
-// let currentQuote = fetch('https://zenquotes.io/api/random')
+// EXAMPLE REQUEST
+// fetch('https://zenquotes.io/api/random')
 //     .then((response) => response.text())
 //     .catch(err => console.log(err))
 // .then((body) => {
-//     console.log(body);
+//     // console.log(JSON.parse(body)[0]) // original nested JSON object
+//     quote = JSON.parse(body)[0].q;
+//     author = JSON.parse(body)[0].a;
+//     console.log(quote);
+//     console.log(`- ${author}`);
 // });
 
 // Handle GET requests to /newQuote route
 app.get("/newQuote", (req, res) => {
-    res.send({ message: "API GET request made!!!" });
     fetch('https://zenquotes.io/api/random', {
          method: "GET",
          headers: {
@@ -27,9 +32,13 @@ app.get("/newQuote", (req, res) => {
             }
         }
     )
-    .then((response) => displayText = response.json())
-    .then((body) => {
-        console.log(body);
+    .then((response) => response.json())
+    .then((data) => {
+        quote = data[0].q
+        res.send({ quote });
+        author = data[0].a
+        console.log(`- ${quote}`);
+        console.log(`-- ${author}\n`);
     });
 });
 
