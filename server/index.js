@@ -21,11 +21,11 @@ app.get("/newQuote", (req, res) => {
     .then((response) => response.json())
     .then((data) => {
         quote = data[0].q;
-        res.send(`<h1>Welcome to simple mindful quotes!</h1>
-        <h3>Quote:</h3><h4 style="color:green">${quote}</h4>`);
         author = data[0].a
         console.log(`- ${quote}`);
         console.log(`-- ${author}\n`);
+        res.send(`<h1>Welcome to simple mindful quotes!</h1>
+        <h3>Quote:</h3><h4 style="color:green">${quote}</h4>\n- ${author}`);
     });
 });
 
