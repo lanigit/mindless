@@ -4,7 +4,7 @@ info:
   title: 'Sample API'
   description: Buy or rent spacecrafts
 servers:
-  - url: https://nadanadalimonada.xyz
+  - url: https://nadanadalimonada.xyx
 paths:
   /spacecrafts/{spacecraftId}:
     parameters:
