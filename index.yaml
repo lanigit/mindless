@@ -1,0 +1,220 @@
+openapi: '3.0.0'
+info:
+  version: '1.0.0'
+  title: 'Sample API'
+  description: Buy or rent spacecrafts
+
+paths:
+  /spacecrafts/{spacecraftId}:
+    parameters:
+      - name: spacecraftId
+        description: The unique identifier of the spacecraft
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/SpacecraftId'
+    get:
+      summary: Read a spacecraft
+      responses:
+        '200':
+          description: The spacecraft corresponding to the provided `spacecraftId`
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpacecraftId'
+        '401':
+          description: Unauthorized access 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: User does not have necessary permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      responses:
+        '200': 
+         description: The updated spacecraft corresponding to the provided `spacecraftId`
+         content:
+           application/json:
+            schema:
+              $ref: '#/components/schemas/SpacecraftId'
+        '401':
+          description: Unauthorized access 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: User does not have necessary permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete: 
+      responses: 
+        '204': 
+          description: The newly deleted resource, an empty object will be returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpacecraftId'
+        '401':
+          description: Unauthorized access 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: User does not have necessary permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /spacecrafts:
+    get: 
+      summary: List all spacecrafts
+      responses:
+        '200':
+          description: List all available spacecrafts
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Spacecraft'
+        '401':
+          description: Unauthorized access 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: User does not have necessary permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post: 
+      summary: Create spacecraft
+      responses:
+        '201': 
+          description: Successfully created spacecraft
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Spacecraft'
+        '401':
+          description: Unauthorized access 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: User does not have necessary permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    SpacecraftId:
+      description: The unique identifier of a spacecraft
+      type: string
+    Spacecraft:
+      type: object
+      required:
+        - id
+        - name
+        - type
+      properties:
+        id:
+          $ref: '#/components/schemas/SpacecraftId'
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+            - capsule
+            - probe
+            - satellite
+            - spaceplane
+            - station
+        description:
+          type: string
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          description: A human readable error message
+          type: string
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: X-Api-Key
+security:
+  - ApiKey: []
